@@ -7,7 +7,6 @@ pandas==0.23.0
 textblob==0.15.1
 Flask_Cors==3.0.4
 pymongo==3.7.1
-pywin32==223
 Flask==1.0.2
 inscriptis==0.0.3.2
 selenium==3.14.0
