@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Bleu Search</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/define.css') }}">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+  </head>
+
+<body>
+        <script src="https://cdn.socket.io/socket.io-1.0.0.js"></script>
+    <script>
+        var socket = io.connect('http://localhost:5000');
+        socket.on('connect', function() {
+    window.alert(io().id);
+}); 
+      </script>
+
+    <div class="container">
+        <div class="jumbotron" style="text-align: center;color: blue;background-color:paleturquoise;height:480px;">
+            <h1>Bleu Search</h1>
+           
+                <input type="text" id="bleusearch" value="" style="width: 200px;"  onkeyup="saveValue(this);" > <span>
+                    <select id="searchoption"  onchange="saveValue1(this);" >
+                     <option value="textsearch">Text</option>
+                     <option value="imagesearch">Images</option>
+                    </select></span>
+                <br><br>
+                <input id = "searchsubmit" type="submit" value="Find Bleu..." name="Find Bleu" style="background:azure;color:blue;text-align: right" onclick="datatopython()">
+<br> <br>
+                <div class="row" style="text-align: center;color: blue">
+                    <div class="col-md-3">
+                    <h5>Art</h5>
+                    <select id="selDatasetart"></select>
+
+                        <script type="text/javascript">
+                            document.getElementById("bleusearch").value = getSavedValue("bleusearch");
+                            if (getSavedValue1("searchoption") == null) {
+                                document.getElementById("searchoption").value = "textsearch";
+                            }
+                            else {
+                            document.getElementById("searchoption").value = getSavedValue1("searchoption");
+                            }
+                                // set the value to this input
+                           
+                            /* Here you can add more inputs to set value. if it's saved */
+                    
+                            //Save the value function - save it to localStorage as (ID, VALUE)
+                            function saveValue(e){
+                               
+                                var id = e.id;  // get the sender's id to save it . 
+                                var val = e.value; // get the value. 
+                                sessionStorage.setItem(id, val);// Every time user writing something, the localStorage's value will override . 
+                            }
+
+                             function saveValue1(e){
+                                var id = e.id;  // get the sender's id to save it . 
+                                var val = e.value;
+                                 //window.alert(document.getElementById('searchoption').value);
+                               sessionStorage.setItem(id, val);
+                               
+                               if (val ==="textsearch" & sessionStorage.getItem("checkingtext") !=null) {
+                                  
+                                document.getElementById("bleusearch").value= sessionStorage.getItem("checkingtext");
+                                  results();
+                               }
+                               else if (val ==="textsearch" & sessionStorage.getItem("checkingtext") ==null) {
+                                document.getElementById("bleusearch").value=sessionStorage.getItem("checkingtext");
+                                d3.select("#search").html("");
+                                d3.select("#result").html("");  
+                                d3.selectAll("#photos").remove();
+                                d3.selectAll("#phototable").remove();
+                                $("#voice").hide();
+                                $("#analysis").hide();
+                               }
+
+                               if (val ==="imagesearch" & sessionStorage.getItem("checkingimage") !=null) {
+                                  
+                                  document.getElementById("bleusearch").value= sessionStorage.getItem("checkingimage");
+                                  gridData();
+                                 }
+                                 else if (val ==="imagesearch" & sessionStorage.getItem("checkingimage") ==null) {
+                                  document.getElementById("bleusearch").value=sessionStorage.getItem("checkingimage");
+                                  d3.select("#search").html("");
+                                 d3.select("#result").html("");  
+                                 d3.selectAll("#photos").remove();
+                                 d3.selectAll("#phototable").remove();
+                                 $("#voice").hide();
+                                 $("#analysis").hide();
+                                 }
+                              
+                               // Every time user writing something, the localStorage's value will override . 
+                            }
+                             
+                            function getSavedValue1  (v){
+                                    return sessionStorage.getItem(v);
+                            }
+
+                            //get the saved value function - return the value of "v" from localStorage. 
+                            function getSavedValue  (v){
+                                if (sessionStorage.getItem(v) === null) {
+                                    return "";// You can change this to your defualt value. 
+                                }
+                                return sessionStorage.getItem(v);
+                            }
+                           // window.alert(getSavedValue1("searchoption").value);
+                            //d3.select("#searchoption").value = getSavedValue1("searchoption");
+                    </script>
+
+                    <h5>Business</h5>
+                    <select id="selDatasetbusiness"></select>
+                    <h5>Computer</h5>
+                    <select id="selDatasetcomputer" ></select>
+                    <h5>Game</h5>
+                    <select id="selDatasetgame" ></select>
+        
+                </div>
+                <div class="col-md-3">
+                    <h5>Health</h5>
+                    <select id="selDatasethealth"></select>
+                    <h5>Home</h5>
+                    <select id="selDatasethome"></select>
+                    <h5>Kid and Teen</h5>
+                    <select id="selDatasetkidteen" ></select>
+                    <h5>News</h5>
+                    <select id="selDatasetnews"></select>
+                </div>
+                <div class="col-md-3">
+                    
+                    <h5>Recreation</h5>
+                    <select id="selDatasetrecreation" ></select>
+                    <h5>Reference</h5>
+                    <select id="selDatasetreference"></select>
+                    <h5>Regional</h5>
+                    <select id="selDatasetregional"></select>
+                    <h5>Science</h5>
+                    <select id="selDatasetscience" ></select>
+                </div>
+                <div class="col-md-3">  
+                    <h5>Shopping</h5>
+                    <select id="selDatasetshopping"></select>
+                    <h5>Society</h5>
+                    <select id="selDatasetsociety"></select>
+                    <h5>Sports</h5>
+                    <select id="selDatasetsports" ></select>
+                    <h5>World</h5>
+                    <select id="selDatasetworld"></select>
+                    </div>
+                </div>    
+        </div>
+
+        
+        <br>
+        <div class="row" id="findout" >
+                <h2 id="result" style="text-align: center;color: blue"></h2>
+            </div>
+              &nbsp; &nbsp; &nbsp;&nbsp;
+                <!-- <button id="loaddata" type="button"  style='display:none;' onclick="results()"> Searching </button> -->
+                <button id="voice" type="button"  style='display:none;' onclick="voice()">Voice Assistant </button>
+                <button id="analysis" type="button"  style='display:none;' onclick="analyst()">Content Analyst</button>
+                <br>
+                <br>
+                <div id="search" style="color:rgb(72, 125, 240)">
+                       
+                </div>
+
+       
+
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
+<!-- Leaflet JavaScript -->
+<script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<!-- Our JavaScript -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
