@@ -13,6 +13,4 @@ selenium==3.14.0
 wikipedia==1.4.0
 plotly==3.2.1
 numpy==1.14.3
-caighdean==0.0.3 \
-    --hash=sha256:5d527a66a7e0a755f5fa87c63e365da05f18a2f37897bef21c5c02cb10867a92
 beautifulsoup4==4.6.3
