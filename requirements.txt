@@ -1,3 +1,4 @@
+python==3.6.4
 gunicorn==19.7.1
 requests==2.18.4
 nltk==3.3
