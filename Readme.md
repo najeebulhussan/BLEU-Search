@@ -11,7 +11,7 @@ Search Capacity
 ![png](imagesr.png)
 
 "Text and Number Analysis"
-![png](anal.png)
+![png](analy.png)
 
 
 ```python
