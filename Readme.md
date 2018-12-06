@@ -1,4 +1,10 @@
 
+![png](Total Search Capacity.png)
+![png](Categories.png)
+
+![png](searchsample.png)
+![png](searchsample1.png)
+![png](searchsample2.png)
 
 ```python
 import nltk 

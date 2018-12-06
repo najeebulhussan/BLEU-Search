@@ -785,7 +785,6 @@ app = Flask(__name__)
 CORS(app)
 
 
-
 # create route that renders index.html template
 @app.route("/")
 def home():
@@ -906,4 +905,4 @@ def add_header(response):
     return response
     
 if __name__ == "__main__":
-    app.run(debug=True,threaded=True)
+    app.run(host="192.168.1.13",port=443,debug=True,threaded=True)
