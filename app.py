@@ -905,4 +905,4 @@ def add_header(response):
     return response
     
 if __name__ == "__main__":
-    app.run(host="192.168.1.13",port=443,debug=True,threaded=True)
+    app.run(debug=True,threaded=True)
