@@ -640,7 +640,7 @@ def mainsearchwiththreads1(dataframefile,searchstr):
     print(data)
     if len(data)>0:
         dbuser = "admin"
-        dbpassword = "dinhdinh1981"
+        dbpassword = ""
         conn=f"mongodb://{dbuser}:{dbpassword}@ds245082.mlab.com:45082/cryptocurrency"
         client = pymongo.MongoClient(conn)
         db = client.cryptocurrency
